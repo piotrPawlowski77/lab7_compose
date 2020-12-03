@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+
+  web:
+    container_name: apachev1
+    build:
+      context: ./httpd
+    ports:
+      - 8888:80   
+    networks:
+      - backend
+      - frontend
+      
+  php:
+    container_name: phpv1
+    build:
+      context: ./php
+    working_dir: /srv/app
+    networks:
+      - backend
+      
+  mysql:
+    container_name: mysqlv1
+    build:
+      context: ./mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=ryba123    
+    volumes:
+      - ./baza:/var/lib/mysql
+    networks:
+      - backend
+      
+networks:
+  backend:
+    driver: "bridge"
+  frontend:
+    driver: "bridge"
